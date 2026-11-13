@@ -16,12 +16,19 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        signal:
+          "rounded-full bg-primary text-primary-foreground font-semibold tracking-wide shadow-[var(--shadow-signal)] hover:brightness-110",
+        hud: "rounded-full border border-border bg-panel text-foreground backdrop-blur-md hover:border-primary/60 hover:text-primary",
+        moon: "rounded-full border border-moon/40 bg-panel text-moon backdrop-blur-md hover:bg-moon/20",
+        mars: "rounded-full border border-mars/50 bg-panel text-mars backdrop-blur-md hover:bg-mars/25",
       },
       size: {
         default: "h-9 px-4 py-2",
         sm: "h-8 rounded-md px-3 text-xs",
         lg: "h-10 rounded-md px-8",
         icon: "h-9 w-9",
+        xl: "h-12 px-7 text-base",
+        "icon-lg": "h-11 w-11",
       },
     },
     defaultVariants: {

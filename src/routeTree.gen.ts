@@ -10,33 +10,128 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as ArchiveRouteImport } from './routes/archive'
+import { Route as ChallengesRouteImport } from './routes/challenges'
+import { Route as PassportRouteImport } from './routes/passport'
+import { Route as TimelineRouteImport } from './routes/timeline'
+import { Route as ExplorePlanetRouteImport } from './routes/explore.$planet'
+import { Route as MemoryIdRouteImport } from './routes/memory.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArchiveRoute = ArchiveRouteImport.update({
+  id: '/archive',
+  path: '/archive',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChallengesRoute = ChallengesRouteImport.update({
+  id: '/challenges',
+  path: '/challenges',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PassportRoute = PassportRouteImport.update({
+  id: '/passport',
+  path: '/passport',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TimelineRoute = TimelineRouteImport.update({
+  id: '/timeline',
+  path: '/timeline',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExplorePlanetRoute = ExplorePlanetRouteImport.update({
+  id: '/explore/$planet',
+  path: '/explore/$planet',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemoryIdRoute = MemoryIdRouteImport.update({
+  id: '/memory/$id',
+  path: '/memory/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/archive': typeof ArchiveRoute
+  '/challenges': typeof ChallengesRoute
+  '/passport': typeof PassportRoute
+  '/timeline': typeof TimelineRoute
+  '/explore/$planet': typeof ExplorePlanetRoute
+  '/memory/$id': typeof MemoryIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/archive': typeof ArchiveRoute
+  '/challenges': typeof ChallengesRoute
+  '/passport': typeof PassportRoute
+  '/timeline': typeof TimelineRoute
+  '/explore/$planet': typeof ExplorePlanetRoute
+  '/memory/$id': typeof MemoryIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/archive': typeof ArchiveRoute
+  '/challenges': typeof ChallengesRoute
+  '/passport': typeof PassportRoute
+  '/timeline': typeof TimelineRoute
+  '/explore/$planet': typeof ExplorePlanetRoute
+  '/memory/$id': typeof MemoryIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/archive'
+    | '/challenges'
+    | '/passport'
+    | '/timeline'
+    | '/explore/$planet'
+    | '/memory/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/archive'
+    | '/challenges'
+    | '/passport'
+    | '/timeline'
+    | '/explore/$planet'
+    | '/memory/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/archive'
+    | '/challenges'
+    | '/passport'
+    | '/timeline'
+    | '/explore/$planet'
+    | '/memory/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  ArchiveRoute: typeof ArchiveRoute
+  ChallengesRoute: typeof ChallengesRoute
+  PassportRoute: typeof PassportRoute
+  TimelineRoute: typeof TimelineRoute
+  ExplorePlanetRoute: typeof ExplorePlanetRoute
+  MemoryIdRoute: typeof MemoryIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +143,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/archive': {
+      id: '/archive'
+      path: '/archive'
+      fullPath: '/archive'
+      preLoaderRoute: typeof ArchiveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/challenges': {
+      id: '/challenges'
+      path: '/challenges'
+      fullPath: '/challenges'
+      preLoaderRoute: typeof ChallengesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/passport': {
+      id: '/passport'
+      path: '/passport'
+      fullPath: '/passport'
+      preLoaderRoute: typeof PassportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/timeline': {
+      id: '/timeline'
+      path: '/timeline'
+      fullPath: '/timeline'
+      preLoaderRoute: typeof TimelineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/explore/$planet': {
+      id: '/explore/$planet'
+      path: '/explore/$planet'
+      fullPath: '/explore/$planet'
+      preLoaderRoute: typeof ExplorePlanetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/memory/$id': {
+      id: '/memory/$id'
+      path: '/memory/$id'
+      fullPath: '/memory/$id'
+      preLoaderRoute: typeof MemoryIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  ArchiveRoute: ArchiveRoute,
+  ChallengesRoute: ChallengesRoute,
+  PassportRoute: PassportRoute,
+  TimelineRoute: TimelineRoute,
+  ExplorePlanetRoute: ExplorePlanetRoute,
+  MemoryIdRoute: MemoryIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
