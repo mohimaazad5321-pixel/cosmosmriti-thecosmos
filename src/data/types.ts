@@ -13,6 +13,7 @@ export type CoordinateAccuracy =
 export type ReconstructionKind =
   | "lm-descent"
   | "alsep"
+  | "alsep-a14"
   | "lrv"
   | "pathfinder"
   | "sojourner"
@@ -41,11 +42,29 @@ export interface TimelineEvent {
   detail?: string;
 }
 
+/** Point in a 3D model's own coordinates (metres-ish, y up, origin on the ground). */
+export type Vec3 = [number, number, number];
+
 export interface ArtifactComponent {
   name: string;
   purpose: string;
   how: string;
   kid: string;
+  /** Hotspot on the procedural reconstruction; omitted when the part isn't modelled. */
+  anchor?: Vec3;
+  /** Hotspot on the NASA 3D Resources model, only where the part is clearly identifiable. */
+  nasaAnchor?: Vec3;
+}
+
+export type NasaModelId = "apollo-lunar-module" | "mer-opportunity";
+
+/** An authentic NASA 3D Resources model that depicts this artifact (or its identical twin). */
+export interface NasaModelRef {
+  id: NasaModelId;
+  /** Show only the descent stage: the part of the lunar module that stayed on the Moon. */
+  descentStageOnly?: boolean;
+  /** How the model relates to this specific artifact (twin, generic version, simplifications). */
+  note: string;
 }
 
 export interface LastSignal {
@@ -93,6 +112,6 @@ export interface Artifact {
   thenNow: ThenNow;
   lastSignal: LastSignal;
   components: ArtifactComponent[];
-  reconstruction: { kind: ReconstructionKind };
+  reconstruction: { kind: ReconstructionKind; nasaModel?: NasaModelRef };
   sources: SourceRef[];
 }

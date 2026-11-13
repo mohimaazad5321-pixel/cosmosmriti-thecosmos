@@ -23,16 +23,15 @@ Legend: [x] done · [~] partial / honest alternative · [ ] open
 - [x] Story · Explain Like I'm 10 · Scientist · Parts · Did You Know flip cards · Timeline · Then vs Now · Last Signal · Evidence
 - [x] Real NASA photos (NASA Image Library ids, dates, credits); NASA vs project-written content distinguished
 - [x] Memory Archive, Cosmic Passport (stamps, stats, achievements, restart), Mission Time Machine, Detective, Quiz, About + final message
-- [~] Interactive 3D inspection: simplified educational reconstructions in-world (labelled), parts explained in "Parts" tab
-- [ ] Dedicated 3D inspection viewer (360° rotate, fullscreen, clickable component hotspots, exploded views)
-- [ ] Evaluate authentic NASA 3D Resources models (Apollo LM, LRV, MER) — verify identity/licence, convert & optimise GLB
+- [x] Dedicated 3D inspection viewer (/inspect/:id): 360° rotate, zoom, full screen, numbered part hotspots, exploded "take apart" view
+- [x] NASA 3D Resources evaluated: Apollo Lunar Module (descent stage cut) and MER-B Opportunity (also shown for twin Spirit) used in-world and in the inspector; NASA's library has no LRV, ALSEP, Pathfinder, Sojourner or Phoenix models, so those stay labelled reconstructions
 
 ## Data integration (needs technical validation)
-- [ ] NASA Moon Trek / Mars Trek basemap & elevation tiles for the terrain (verify WMTS endpoints/layer names, CORS)
-- [ ] Verified later orbital images for Apollo 12/14/15, Pathfinder, Sojourner (LROC / HiRISE product ids)
-- [ ] Optional live NASA API content (e.g. APOD) via a server function so the API key stays private
+- [x] NASA Moon Trek / Mars Trek basemap & shaded-relief elevation tiles (verified endpoints, CORS): Real map tab, map overlay in the worlds, no-3D fallback. The 3D terrain stays illustrative on purpose, because sites are compressed there
+- [x] Verified later images for Apollo 12 (PIA12922), 14 (PIA12889), 15 (LRO oblique of Hadley), Pathfinder & Sojourner (HiRISE PIA09105), with honest captions where the hardware is too small to see
+- [x] Live NASA APOD on the About page via a server function (optional NASA_API_KEY secret; DEMO_KEY fallback is rate-limited)
 
 ## Quality
 - [x] Reduced-motion toggle + OS setting, mute toggle, large touch targets, keyboard focus states
 - [x] Rule tests (collection counts, achievements, projection)
-- [ ] Real-device check of frame rate, sound and touch feel
+- [ ] Real-device check of frame rate, sound and touch feel (blocked: needs a person on a real phone/laptop)

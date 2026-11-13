@@ -3,6 +3,7 @@ import { ExternalLink } from "lucide-react";
 import { PageShell } from "@/components/layout/SiteHeader";
 import { Button } from "@/components/ui/button";
 import { dataServices } from "@/data/sources";
+import { ApodCard, apodQuery } from "@/components/about/ApodCard";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -15,6 +16,10 @@ export const Route = createFileRoute("/about")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
+  loader: ({ context }) => {
+    // non-critical live content: start the request but never block the page on NASA's API
+    void context.queryClient.prefetchQuery(apodQuery);
+  },
   component: AboutPage,
 });
 
@@ -23,7 +28,8 @@ const SECTIONS = [
   { h: "Why left-behind equipment matters", p: "Every descent stage, instrument and rover marks a moment when people solved a hard problem far from home. These objects are historical sites. Remembering why they were sent, and what they achieved, connects today's explorers with those who came before." },
   { h: "Historical equipment, not working spacecraft", p: "The ten artifacts here are inactive. Some were left behind by design, some are instrument collections that were switched off, and some are robotic explorers that fell silent. CosmoSmriti explains which is which for each one. They are different from spacecraft operating today." },
   { h: "How we use sources", p: "Dates, coordinates, figures and photographs come from NASA mission pages, the NASA Space Science Data Coordinated Archive, the Apollo Lunar Surface Journal and the NASA Image and Video Library. Each memory has an Evidence tab linking to them. Narrative wording, kid-friendly explanations and 3D reconstructions are created by CosmoSmriti and labelled as such." },
-  { h: "About the 3D worlds", p: "The landscapes are illustrative, generated to feel like the Moon and Mars. Artifact sites are placed using their published coordinates, projected and compressed so every site fits in one explorable area. Coordinates are marked as measured from orbit or approximate. The objects are simplified educational reconstructions, not authentic NASA models." },
+  { h: "About the 3D worlds", p: "The landscapes are illustrative, generated to feel like the Moon and Mars. Artifact sites are placed using their published coordinates, projected and compressed so every site fits in one explorable area. Coordinates are marked as measured from orbit or approximate. Each memory's Real map tab shows the true location on NASA's Moon Trek or Mars Trek maps." },
+  { h: "About the 3D models", p: "For four memories (the two Apollo descent stages, Spirit and Opportunity) we show NASA's own models from NASA 3D Resources, credited on each page; Spirit is shown with the model of its identical twin, Opportunity. NASA's 3D library has no models of the other six, so they are simplified educational reconstructions built by CosmoSmriti and labelled as not authentic NASA models. Every model can be rotated, taken apart and explored part by part in the 3D inspector." },
 ];
 
 function AboutPage() {
@@ -56,6 +62,8 @@ function AboutPage() {
             ))}
           </ul>
         </section>
+
+        <ApodCard />
 
         <p className="mt-10 rounded-xl border border-border bg-secondary/40 p-5 text-sm text-muted-foreground">
           CosmoSmriti is an independent educational project created for the NASA Space Apps Challenge. It is not affiliated with, sponsored by or endorsed by NASA. NASA images are used under NASA's media usage guidelines.

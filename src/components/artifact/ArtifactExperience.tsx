@@ -1,8 +1,12 @@
-import { ExternalLink, MapPin, Info, Radio, AlertTriangle, BookOpen, Baby, FlaskConical, Puzzle, Sparkles, Clock, History, ShieldCheck, Box } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { ExternalLink, MapPin, Info, Radio, AlertTriangle, BookOpen, Baby, FlaskConical, Puzzle, Sparkles, Clock, History, ShieldCheck, Box, Rotate3d, Map as MapIcon } from "lucide-react";
+import { TrekMap } from "@/components/map/TrekMap";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import type { Artifact } from "@/data/types";
-import { statusLabel } from "@/data/artifacts";
+import { artifactsByPlanet, statusLabel } from "@/data/artifacts";
+import { NASA_MODELS } from "@/game/nasaModels";
 import { cn } from "@/lib/utils";
 import { FlipCard } from "./FlipCard";
 import { NasaFigure } from "./NasaFigure";
@@ -15,6 +19,7 @@ const TABS = [
   { v: "facts", label: "Did you know?", icon: Sparkles },
   { v: "timeline", label: "Timeline", icon: Clock },
   { v: "thennow", label: "Then vs Now", icon: History },
+  { v: "map", label: "Real map", icon: MapIcon },
   { v: "signal", label: "Last Signal", icon: Radio },
   { v: "evidence", label: "Evidence", icon: ShieldCheck },
 ] as const;
@@ -62,15 +67,40 @@ export function ArtifactHeader({ a }: { a: Artifact }) {
   );
 }
 
+/** Says exactly what the 3D object is: NASA's own model or a CosmoSmriti reconstruction. */
+function ModelProvenance({ a }: { a: Artifact }) {
+  const nasa = a.reconstruction.nasaModel;
+  const meta = nasa ? NASA_MODELS[nasa.id] : null;
+  return (
+    <div className="flex flex-col gap-3 rounded-xl border border-dashed border-border p-4 text-xs text-muted-foreground sm:flex-row sm:items-center">
+      <p className="flex flex-1 items-start gap-2">
+        {nasa && meta ? (
+          <>
+            <ShieldCheck className="mt-0.5 size-4 shrink-0 text-success" />
+            <span>
+              The 3D object is NASA's own model, “{meta.title}” from NASA 3D Resources ({meta.credit}). {nasa.note} On low-power devices the 3D world shows a simplified CosmoSmriti reconstruction instead. Photos below are original NASA images.
+            </span>
+          </>
+        ) : (
+          <>
+            <Box className="mt-0.5 size-4 shrink-0" />
+            <span>The 3D object is an educational reconstruction built for CosmoSmriti. It is not an authentic NASA model; NASA 3D Resources has no model of this artifact. Photos below are original NASA images.</span>
+          </>
+        )}
+      </p>
+      <Button variant="signal" size="sm" asChild className="h-10 shrink-0 px-5">
+        <Link to="/inspect/$id" params={{ id: a.id }}><Rotate3d /> Inspect in 3D</Link>
+      </Button>
+    </div>
+  );
+}
+
 export function ArtifactExperience({ a, compact = false }: { a: Artifact; compact?: boolean }) {
   const accent: "moon" | "mars" = a.planet;
   return (
     <div className="space-y-6">
       <ArtifactHeader a={a} />
-      <p className="flex items-start gap-2 rounded-lg border border-dashed border-border p-3 text-xs text-muted-foreground">
-        <Box className="mt-0.5 size-4 shrink-0" />
-        The 3D object in the world is an educational reconstruction built for CosmoSmriti. It is not an authentic NASA model. Photos below are original NASA images.
-      </p>
+      <ModelProvenance a={a} />
 
       <Tabs defaultValue="story" className="w-full">
         <div className="-mx-1 overflow-x-auto pb-1">
@@ -131,7 +161,12 @@ export function ArtifactExperience({ a, compact = false }: { a: Artifact; compac
         </TabsContent>
 
         <TabsContent value="parts" className="mt-6">
-          <p className="mb-4 text-sm text-muted-foreground">Tap a part to learn what it did.</p>
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <p className="text-sm text-muted-foreground">Tap a part to learn what it did.</p>
+            <Button variant="hud" size="sm" asChild className="h-9 px-4">
+              <Link to="/inspect/$id" params={{ id: a.id }}><Rotate3d /> See the parts in 3D</Link>
+            </Button>
+          </div>
           <div className={cn("grid gap-3", compact ? "" : "sm:grid-cols-2")}>
             {a.components.map((c, i) => (
               <details key={c.name} className="group rounded-xl border border-border bg-secondary/30 p-4 open:border-primary/50 open:bg-primary/5">
@@ -179,7 +214,7 @@ export function ArtifactExperience({ a, compact = false }: { a: Artifact; compac
             <div>
               <p className="eyebrow mb-2">Later</p>
               {a.thenNow.now ? (
-                <NasaFigure image={a.thenNow.now} />
+                <NasaFigure image={a.thenNow.now} imgClassName="object-contain" />
               ) : (
                 <div className="flex aspect-[4/3] items-center justify-center rounded-xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
                   No verified later image included yet. We won't show an unrelated picture in its place.
@@ -193,6 +228,26 @@ export function ArtifactExperience({ a, compact = false }: { a: Artifact; compac
             <p className="eyebrow mb-1 mt-3">What is known today</p>
             <p>{a.thenNow.knownToday}</p>
           </div>
+        </TabsContent>
+
+        <TabsContent value="map" className="mt-6 space-y-3">
+          <TrekMap
+            planet={a.planet}
+            center={a.coordinates}
+            zoom={a.planet === "moon" ? 5 : 4}
+            className="h-[340px]"
+            label={`NASA map around ${a.landingSite}`}
+            markers={artifactsByPlanet(a.planet).map((o) => ({
+              id: o.id,
+              lat: o.coordinates.lat,
+              lon: o.coordinates.lon,
+              label: o.shortName,
+              emphasis: o.id === a.id,
+            }))}
+          />
+          <p className="text-xs text-muted-foreground">
+            The marker sits at the published {a.coordinateAccuracy === "orbital-measured" ? "position measured from orbit" : "landing-site coordinate"} ({fmtCoord(a.coordinates.lat, a.coordinates.lon)}). Unlike the 3D world, distances on this map are real. The hardware itself is far too small to see at these zoom levels.
+          </p>
         </TabsContent>
 
         <TabsContent value="signal" className="mt-6 space-y-4">

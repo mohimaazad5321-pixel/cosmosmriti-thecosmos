@@ -5,7 +5,7 @@ import * as THREE from "three";
 import type { Artifact } from "@/data/types";
 import type { HiddenMemory } from "@/data/extras";
 import { cn } from "@/lib/utils";
-import { Reconstruction } from "./Reconstructions";
+import { ArtifactModel } from "./ArtifactModel";
 
 const SIGNAL = "#f2c063";
 const PLANET_TINT = { moon: "#dfe6f2", mars: "#ff9a62" };
@@ -18,9 +18,10 @@ interface MarkerProps {
   revealing: boolean;
   onSelect: (id: string) => void;
   labelsRoot: RefObject<HTMLDivElement | null>;
+  lowPower: boolean;
 }
 
-export function ArtifactMarker({ artifact, position, discovered, active, revealing, onSelect, labelsRoot }: MarkerProps) {
+export function ArtifactMarker({ artifact, position, discovered, active, revealing, onSelect, labelsRoot, lowPower }: MarkerProps) {
   const ring = useRef<THREE.Mesh>(null);
   const gem = useRef<THREE.Mesh>(null);
   const beam = useRef<THREE.Mesh>(null);
@@ -55,7 +56,7 @@ export function ArtifactMarker({ artifact, position, discovered, active, reveali
     <group position={position}>
       {showModel && (
         <group onClick={handle} onPointerOver={(e) => { e.stopPropagation(); setHover(true); document.body.style.cursor = "pointer"; }} onPointerOut={() => { setHover(false); document.body.style.cursor = ""; }}>
-          <Reconstruction kind={artifact.reconstruction.kind} />
+          <ArtifactModel artifact={artifact} preferNasa={!lowPower} />
         </group>
       )}
       <mesh ref={ring} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.08, 0]}>

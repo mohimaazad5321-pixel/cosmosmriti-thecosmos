@@ -91,6 +91,7 @@ function SceneContents(p: WorldSceneProps) {
           revealing={p.revealingId === artifact.id}
           onSelect={p.onSelect}
           labelsRoot={p.labelsRoot}
+          lowPower={p.lowPower}
         />
       ))}
       {p.hidden.map((m) => (

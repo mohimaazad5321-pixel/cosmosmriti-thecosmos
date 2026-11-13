@@ -110,18 +110,26 @@ export const moonArtifacts: Artifact[] = [
       afterward: "There is no 'final signal' to report for this artifact, so CosmoSmriti does not invent one.",
     },
     components: [
-      { name: "Descent engine", purpose: "Slow the lunar module and control the landing.", how: "A throttleable rocket engine let the crew vary thrust, hover and descend gently.", kid: "A rocket you can turn up and down like a volume knob." },
-      { name: "Landing legs & footpads", purpose: "Support the spacecraft on uneven ground.", how: "Four legs absorbed the impact of touchdown and spread the weight across wide footpads.", kid: "Four sturdy legs, like a table that can land." },
-      { name: "Surface contact probes", purpose: "Tell the crew they had touched the surface.", how: "Long probes under the footpads triggered a 'contact light' when they brushed the ground.", kid: "Feelers that said 'we're almost down!'" },
-      { name: "Commemorative plaque", purpose: "Mark the first crewed landing.", how: "A stainless steel plaque mounted on a leg, signed by the crew and the US President.", kid: "A message to anyone who visits in the future." },
+      { name: "Descent engine", purpose: "Slow the lunar module and control the landing.", how: "A throttleable rocket engine let the crew vary thrust, hover and descend gently.", kid: "A rocket you can turn up and down like a volume knob.", anchor: [0, 0.95, 0], nasaAnchor: [0, 0.75, 0] },
+      { name: "Landing legs & footpads", purpose: "Support the spacecraft on uneven ground.", how: "Four legs absorbed the impact of touchdown and spread the weight across wide footpads.", kid: "Four sturdy legs, like a table that can land.", anchor: [1.77, 0.15, 1.77], nasaAnchor: [2.75, 0.25, 0] },
+      { name: "Surface contact probes", purpose: "Tell the crew they had touched the surface.", how: "Long probes under the footpads triggered a 'contact light' when they brushed the ground.", kid: "Feelers that said 'we're almost down!'", anchor: [-1.77, 0.1, 1.77] },
+      { name: "Commemorative plaque", purpose: "Mark the first crewed landing.", how: "A stainless steel plaque mounted on a leg, signed by the crew and the US President.", kid: "A message to anyone who visits in the future.", anchor: [1.5, 1.9, 0] },
     ],
-    reconstruction: { kind: "lm-descent" },
+    reconstruction: {
+      kind: "lm-descent",
+      nasaModel: {
+        id: "apollo-lunar-module",
+        descentStageOnly: true,
+        note: "NASA's generic Apollo Lunar Module model, not a scan of Eagle itself. Only the lower half, the descent stage, is shown here, because the upper ascent stage carried the crew back to orbit.",
+      },
+    },
     sources: [
       src.missionPage(11),
       src.alsj(11),
       src.nssdca("1969-059C", "Apollo 11 Lunar Module Eagle"),
       src.image("PIA12909", "Apollo 11: Second Look"),
       src.lroc,
+      src.nasa3d("Apollo Lunar Module", "https://science.nasa.gov/3d-resources/apollo-lunar-module/"),
     ],
   },
   {
@@ -206,19 +214,21 @@ export const moonArtifacts: Artifact[] = [
     ],
     thenNow: {
       then: nasaImage("as12-47-6919", "medium", "Deploying ALSEP, 19 November 1969.", "1969-11-19"),
-      changed: "CosmoSmriti does not yet include a verified later image of this exact station.",
+      now: nasaImage("PIA12922", "small", "\"Apollo 12 Second Look: Midday on the Ocean of Storms\" — Lunar Reconnaissance Orbiter view of the landing site.", "2009-11-04", "NASA/GSFC/Arizona State University"),
+      changed:
+        "The 1969 photo was taken on the ground; the 2009 view looks straight down from orbit. At this scale the station is only a few bright pixels, so CosmoSmriti does not point to a specific spot in the image.",
       knownToday:
-        "The Lunar Reconnaissance Orbiter Camera team has imaged every Apollo landing site. Their Apollo 12 images are available through the LROC link in the Evidence Center.",
+        "The Lunar Reconnaissance Orbiter Camera team has imaged every Apollo landing site, including Apollo 12's. The station remains where it was deployed and has been switched off since 1977.",
     },
     lastSignal: ALSEP_SHUTDOWN,
     components: [
-      { name: "Central Station", purpose: "Collect data from every instrument and talk to Earth.", how: "Received commands from Earth and transmitted instrument measurements by radio.", kid: "The camp's walkie-talkie and brain." },
-      { name: "Passive Seismometer", purpose: "Detect moonquakes and impacts.", how: "Extremely sensitive sensors recorded tiny ground motions.", kid: "A super-sensitive ear pressed to the ground." },
-      { name: "Lunar Surface Magnetometer", purpose: "Measure magnetic fields at the surface.", how: "Sensors on three arms measured field strength and direction.", kid: "A compass that measures how strong magnetism is." },
-      { name: "SNAP-27 power generator", purpose: "Provide steady electrical power.", how: "Converted heat from radioactive decay into electricity.", kid: "A battery that keeps warm and never needs sunlight." },
+      { name: "Central Station", purpose: "Collect data from every instrument and talk to Earth.", how: "Received commands from Earth and transmitted instrument measurements by radio.", kid: "The camp's walkie-talkie and brain.", anchor: [0, 0.6, 0] },
+      { name: "Passive Seismometer", purpose: "Detect moonquakes and impacts.", how: "Extremely sensitive sensors recorded tiny ground motions.", kid: "A super-sensitive ear pressed to the ground.", anchor: [2.3, 0.35, 1.4] },
+      { name: "Lunar Surface Magnetometer", purpose: "Measure magnetic fields at the surface.", how: "Sensors on three arms measured field strength and direction.", kid: "A compass that measures how strong magnetism is.", anchor: [1.8, 0.6, -1.8] },
+      { name: "SNAP-27 power generator", purpose: "Provide steady electrical power.", how: "Converted heat from radioactive decay into electricity.", kid: "A battery that keeps warm and never needs sunlight.", anchor: [-2.6, 0.85, 0.8] },
     ],
     reconstruction: { kind: "alsep" },
-    sources: [src.missionPage(12), src.alsj(12), src.nssdca("1969-099C", "Apollo 12 Lunar Module"), src.apolloIndex, src.lroc],
+    sources: [src.missionPage(12), src.alsj(12), src.nssdca("1969-099C", "Apollo 12 Lunar Module"), src.apolloIndex, src.lroc, src.image("PIA12922", "Apollo 12 Second Look: Midday on the Ocean of Storms")],
   },
   {
     id: "apollo-14-alsep",
@@ -302,18 +312,20 @@ export const moonArtifacts: Artifact[] = [
     ],
     thenNow: {
       then: nasaImage("as14-67-09379", "medium", "ALSEP Central Station, 5 February 1971.", "1971-02-05"),
-      changed: "CosmoSmriti does not yet include a verified later image of this exact station.",
-      knownToday: "LROC has imaged the Apollo 14 site; the images are available through the LROC link in the Evidence Center.",
+      now: nasaImage("PIA12889", "orig", "\"LROC First Look at the Apollo Landing Sites\" — the Apollo 14 site, with the ALSEP and the descent stage of Antares labelled by NASA.", "2009-07-17", "NASA/GSFC/Arizona State University"),
+      changed:
+        "The 1971 photo is a close-up on the ground; the 2009 image looks down from orbit, where the whole station is a tiny bright speck. The labels and the 100-metre scale bar are part of NASA's image.",
+      knownToday: "The ALSEP and the descent stage are still where the crew left them. The station was switched off in 1977.",
     },
     lastSignal: ALSEP_SHUTDOWN,
     components: [
-      { name: "Central Station", purpose: "Coordinate the instruments and radio data to Earth.", how: "Distributed power and relayed measurements and commands.", kid: "The science camp's control box." },
-      { name: "Active Seismic Experiment", purpose: "Study the layers just below the surface.", how: "Small charges created vibrations measured by a line of geophones.", kid: "Tapping the ground and listening for the echo." },
-      { name: "Charged Particle Lunar Environment Experiment", purpose: "Measure electrons and protons hitting the Moon.", how: "Detectors counted charged particles arriving at the surface.", kid: "A counter for tiny space particles." },
-      { name: "Cold Cathode Gauge", purpose: "Measure the Moon's extremely thin atmosphere.", how: "Measured gas pressure far lower than anything natural on Earth.", kid: "Checks how close to 'nothing' the Moon's air is." },
+      { name: "Central Station", purpose: "Coordinate the instruments and radio data to Earth.", how: "Distributed power and relayed measurements and commands.", kid: "The science camp's control box.", anchor: [0, 0.6, 0] },
+      { name: "Active Seismic Experiment", purpose: "Study the layers just below the surface.", how: "Small charges created vibrations measured by a line of geophones.", kid: "Tapping the ground and listening for the echo.", anchor: [2.2, 0.15, -1.4] },
+      { name: "Charged Particle Lunar Environment Experiment", purpose: "Measure electrons and protons hitting the Moon.", how: "Detectors counted charged particles arriving at the surface.", kid: "A counter for tiny space particles.", anchor: [1.5, 0.45, 1.3] },
+      { name: "Cold Cathode Gauge", purpose: "Measure the Moon's extremely thin atmosphere.", how: "Measured gas pressure far lower than anything natural on Earth.", kid: "Checks how close to 'nothing' the Moon's air is.", anchor: [-1.4, 0.4, -1.5] },
     ],
-    reconstruction: { kind: "alsep" },
-    sources: [src.missionPage(14), src.alsj(14), src.nssdca("1971-008C", "Apollo 14 Lunar Module"), src.apolloIndex, src.lroc],
+    reconstruction: { kind: "alsep-a14" },
+    sources: [src.missionPage(14), src.alsj(14), src.nssdca("1971-008C", "Apollo 14 Lunar Module"), src.apolloIndex, src.lroc, src.image("PIA12889", "LROC First Look at the Apollo Landing Sites")],
   },
   {
     id: "apollo-15-lrv",
@@ -397,8 +409,10 @@ export const moonArtifacts: Artifact[] = [
     ],
     thenNow: {
       then: nasaImage("as15-86-11603", "medium", "At work with the rover, 31 July 1971.", "1971-07-31"),
-      changed: "CosmoSmriti does not yet include a verified later image of the rover's final position.",
-      knownToday: "The rover remains at Hadley. LROC images of the Apollo 15 site are available through the Evidence Center.",
+      now: nasaImage("GSFC_20171208_Archive_e001054", "small", "\"Soaring Over Lunar Mt. Hadley\" — Lunar Reconnaissance Orbiter oblique view toward Hadley Rille (date is NASA's archive date).", "2017-12-08", "NASA/Goddard/Arizona State University"),
+      changed:
+        "This orbital view shows the landscape around Hadley Base, between the Apennine mountains and Hadley Rille. The rover itself is far too small to see at this scale; the image shows where it is, not the rover.",
+      knownToday: "The rover remains parked near the landing site at Hadley. LROC close-up images of the site are available through the Evidence Center.",
     },
     lastSignal: {
       available: true,
@@ -410,13 +424,13 @@ export const moonArtifacts: Artifact[] = [
         "The rover was left parked at Hadley. It has non-rechargeable batteries and is inactive. CosmoSmriti does not have a verified record of its last individual transmission, so none is shown.",
     },
     components: [
-      { name: "Wire-mesh wheels", purpose: "Grip loose lunar soil without air-filled tyres.", how: "Woven zinc-coated steel strands with titanium chevron treads.", kid: "Wheels made of metal 'fabric', like a springy basket." },
-      { name: "Hub motors", purpose: "Drive each wheel independently.", how: "An electric motor on every wheel; if one failed, the others kept going.", kid: "Every wheel has its own little engine." },
-      { name: "Hand controller", purpose: "Steer, accelerate and brake.", how: "A single T-shaped stick between the seats controlled all motors.", kid: "A joystick, like a video game!" },
-      { name: "High-gain antenna & TV camera", purpose: "Send live TV and voice to Earth.", how: "A mesh dish antenna; Houston could aim the camera remotely.", kid: "A satellite dish so Earth could watch." },
+      { name: "Wire-mesh wheels", purpose: "Grip loose lunar soil without air-filled tyres.", how: "Woven zinc-coated steel strands with titanium chevron treads.", kid: "Wheels made of metal 'fabric', like a springy basket.", anchor: [1.15, 0.41, 1.0] },
+      { name: "Hub motors", purpose: "Drive each wheel independently.", how: "An electric motor on every wheel; if one failed, the others kept going.", kid: "Every wheel has its own little engine.", anchor: [-1.15, 0.41, -0.95] },
+      { name: "Hand controller", purpose: "Steer, accelerate and brake.", how: "A single T-shaped stick between the seats controlled all motors.", kid: "A joystick, like a video game!", anchor: [0.3, 0.95, 0] },
+      { name: "High-gain antenna & TV camera", purpose: "Send live TV and voice to Earth.", how: "A mesh dish antenna; Houston could aim the camera remotely.", kid: "A satellite dish so Earth could watch.", anchor: [1.25, 2.2, 0] },
     ],
     reconstruction: { kind: "lrv" },
-    sources: [src.missionPage(15), src.alsj(15), src.lrv, src.nssdca("1971-063C", "Apollo 15 Lunar Module"), src.lroc],
+    sources: [src.missionPage(15), src.alsj(15), src.lrv, src.nssdca("1971-063C", "Apollo 15 Lunar Module"), src.lroc, src.image("GSFC_20171208_Archive_e001054", "Soaring Over Lunar Mt. Hadley")],
   },
   {
     id: "apollo-17-challenger",
@@ -501,18 +515,26 @@ export const moonArtifacts: Artifact[] = [
       afterward: "There is no artifact-specific final signal, so CosmoSmriti does not invent one.",
     },
     components: [
-      { name: "Descent engine", purpose: "Control the landing.", how: "Throttleable rocket engine for braking and hovering.", kid: "The rocket that made a soft landing." },
-      { name: "Landing legs", purpose: "Hold the lander level on the surface.", how: "Four crushable legs absorbed landing shock.", kid: "Legs with built-in cushions." },
-      { name: "Equipment bays", purpose: "Carry tools, experiments and the folded rover.", how: "Storage compartments around the descent stage.", kid: "Cupboards on the outside of the spaceship." },
-      { name: "Plaque", purpose: "Mark the end of Apollo's lunar exploration.", how: "A plaque mounted on the descent stage.", kid: "A goodbye note on the Moon." },
+      { name: "Descent engine", purpose: "Control the landing.", how: "Throttleable rocket engine for braking and hovering.", kid: "The rocket that made a soft landing.", anchor: [0, 0.95, 0], nasaAnchor: [0, 0.75, 0] },
+      { name: "Landing legs", purpose: "Hold the lander level on the surface.", how: "Four crushable legs absorbed landing shock.", kid: "Legs with built-in cushions.", anchor: [1.77, 0.15, 1.77], nasaAnchor: [2.75, 0.25, 0] },
+      { name: "Equipment bays", purpose: "Carry tools, experiments and the folded rover.", how: "Storage compartments around the descent stage.", kid: "Cupboards on the outside of the spaceship.", anchor: [0, 1.9, 1.5], nasaAnchor: [1.45, 1.4, 1.45] },
+      { name: "Plaque", purpose: "Mark the end of Apollo's lunar exploration.", how: "A plaque mounted on the descent stage.", kid: "A goodbye note on the Moon.", anchor: [1.5, 1.9, 0] },
     ],
-    reconstruction: { kind: "lm-descent" },
+    reconstruction: {
+      kind: "lm-descent",
+      nasaModel: {
+        id: "apollo-lunar-module",
+        descentStageOnly: true,
+        note: "NASA's generic Apollo Lunar Module model, not a scan of Challenger. Apollo 17 flew an upgraded lunar module that carried the rover, so some details differ. Only the descent stage is shown, because the ascent stage lifted off.",
+      },
+    },
     sources: [
       src.missionPage(17),
       src.alsj(17),
       src.nssdca("1972-096C", "Apollo 17 Lunar Module Challenger"),
       src.image("PIA12920", "Exploring the Apollo 17 Site"),
       src.lrv,
+      src.nasa3d("Apollo Lunar Module", "https://science.nasa.gov/3d-resources/apollo-lunar-module/"),
     ],
   },
 ];

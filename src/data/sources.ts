@@ -68,6 +68,18 @@ export const src = {
     url: "https://www.lroc.asu.edu/",
     kind: "archive",
   } as SourceRef,
+  nasa3d: (title: string, url: string): SourceRef => ({
+    label: `NASA 3D Resources model: ${title}`,
+    publisher: "NASA Science — 3D Resources",
+    url,
+    kind: "nasa",
+  }),
+  trek: (planet: "moon" | "mars"): SourceRef => ({
+    label: planet === "moon" ? "Moon Trek map tiles (LRO WAC mosaic, LOLA shaded relief)" : "Mars Trek map tiles (Viking colour mosaic, MOLA shaded relief)",
+    publisher: "NASA Solar System Treks",
+    url: planet === "moon" ? "https://trek.nasa.gov/moon/" : "https://trek.nasa.gov/mars/",
+    kind: "nasa",
+  }),
   image: (nasaId: string, title: string): SourceRef => ({
     label: `Image ${nasaId}: ${title}`,
     publisher: "NASA Image and Video Library",

@@ -1,33 +1,35 @@
-import { HelpCircle } from "lucide-react";
 import type { Artifact, Planet } from "@/data/types";
-import { eyeImages } from "@/components/landing/RobotGuide";
-import { cn } from "@/lib/utils";
+import { TrekMap } from "@/components/map/TrekMap";
+import { OVERVIEW } from "@/game/trek";
 
-/** Non-3D exploration for devices without WebGL: a flat map with the same markers. */
+/** Non-3D exploration for devices without WebGL: NASA's real map with every site at its true coordinates. */
 export function WorldFallback({ planet, items, discovered, onSelect }: { planet: Planet; items: { artifact: Artifact; xz: [number, number] }[]; discovered: string[]; onSelect: (id: string) => void }) {
+  const o = OVERVIEW[planet];
   return (
-    <div className="bg-space flex min-h-full items-center justify-center p-6 pt-28">
-      <div className="w-full max-w-3xl">
-        <p className="mb-4 text-center text-sm text-muted-foreground">
-          3D isn't available on this device, so here is a simple map. Every memory is still discoverable.
+    <div className="bg-space flex min-h-full items-center justify-center p-4 pb-28 pt-28">
+      <div className="w-full max-w-4xl">
+        <p className="mb-3 text-center text-sm text-muted-foreground">
+          3D isn't available on this device, so here is NASA's real map instead. Every memory is still discoverable: tap a signal.
         </p>
-        <div className="relative aspect-square w-full overflow-hidden rounded-full border border-border">
-          <img src={eyeImages[planet]} alt="" className="absolute inset-0 h-full w-full scale-110 object-cover opacity-60" />
-          {items.map(({ artifact, xz }) => {
-            const found = discovered.includes(artifact.id);
-            return (
-              <button
-                key={artifact.id}
-                type="button"
-                onClick={() => onSelect(artifact.id)}
-                className={cn("hud-chip absolute -translate-x-1/2 -translate-y-1/2 px-3 py-2", found ? "text-foreground" : "text-primary")}
-                style={{ left: `${50 + (xz[0] / 180) * 100}%`, top: `${50 + (xz[1] / 180) * 100}%` }}
-              >
-                {found ? artifact.shortName : <><HelpCircle className="size-3" /> {artifact.missionYear}</>}
-              </button>
-            );
+        <TrekMap
+          planet={planet}
+          center={{ lat: o.lat, lon: o.lon }}
+          zoom={o.zoom}
+          className="h-[60svh]"
+          label={`Map of ${planet === "moon" ? "the Moon" : "Mars"} with ${items.length} memory sites`}
+          markers={items.map(({ artifact: a }) => {
+            const found = discovered.includes(a.id);
+            return {
+              id: a.id,
+              lat: a.coordinates.lat,
+              lon: a.coordinates.lon,
+              label: found ? `${a.shortName}, ${a.missionYear}` : `Unknown memory from ${a.missionYear}`,
+              chip: found ? a.shortName : `? · ${a.missionYear}`,
+              emphasis: !found,
+              onSelect: () => onSelect(a.id),
+            };
           })}
-        </div>
+        />
       </div>
     </div>
   );

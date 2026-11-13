@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, Archive, BookMarked, HelpCircle, Keyboard, Locate, X, Repeat } from "lucide-react";
+import { ArrowLeft, Archive, BookMarked, HelpCircle, Keyboard, Locate, X, Repeat, Map as MapIcon } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -9,6 +9,8 @@ import { SettingsToggles } from "@/components/layout/SettingsToggles";
 import { ArtifactExperience } from "@/components/artifact/ArtifactExperience";
 import { WorldScene } from "@/components/world/WorldScene";
 import { WorldFallback } from "@/components/world/WorldFallback";
+import { TrekMap } from "@/components/map/TrekMap";
+import { OVERVIEW } from "@/game/trek";
 import { CanvasBoundary } from "@/components/world/CanvasBoundary";
 import type { FlyRequest } from "@/components/world/CameraRig";
 import { artifacts, artifactsByPlanet, getArtifact, planetMeta } from "@/data/artifacts";
@@ -71,6 +73,7 @@ function ExplorePage() {
   const [selected, setSelected] = useState<string | null>(null);
   const [revealing, setRevealing] = useState<string | null>(null);
   const [showHelp, setShowHelp] = useState(true);
+  const [showMap, setShowMap] = useState(false);
   const revealTimer = useRef<number | undefined>(undefined);
   const labelsRoot = useRef<HTMLDivElement>(null);
 
@@ -88,6 +91,7 @@ function ExplorePage() {
     setReady(false);
     setSelected(null);
     setRevealing(null);
+    setShowMap(false);
   }, [planet]);
 
   const items = useMemo(
@@ -235,6 +239,11 @@ function ExplorePage() {
               <Repeat /> <span className="hidden sm:inline">Go to {planetMeta[other].name}</span>
             </Link>
           </Button>
+          {webgl && (
+            <Button variant="hud" size="icon-lg" onClick={() => setShowMap((m) => !m)} aria-label="Real NASA map" aria-pressed={showMap} title="Real NASA map">
+              <MapIcon />
+            </Button>
+          )}
           <Button variant="hud" size="icon-lg" asChild aria-label="Memory Archive" title="Memory Archive">
             <Link to="/archive"><Archive /></Link>
           </Button>
@@ -260,6 +269,45 @@ function ExplorePage() {
             <li>Small white sparkles hide extra secrets.</li>
           </ul>
           <p className="mt-3 text-xs text-muted-foreground">Illustrative terrain. Sites are placed by their real coordinates, squeezed together so you can visit them all.</p>
+        </div>
+      )}
+
+      {/* Real NASA map overlay: true coordinates, unlike the compressed 3D layout */}
+      {showMap && (
+        <div className="absolute inset-0 z-[35] flex items-center justify-center bg-background/60 p-3 backdrop-blur-sm md:p-8" role="dialog" aria-label={`Real map of ${meta.name}`}>
+          <div className="panel w-full max-w-4xl p-3 md:p-4">
+            <div className="mb-3 flex items-start justify-between gap-3">
+              <div>
+                <p className="eyebrow text-primary">Real NASA map · {meta.name}</p>
+                <p className="mt-1 text-xs text-muted-foreground">Sites at their true coordinates. The 3D world squeezes them together so you can walk between them; this map shows the real distances. Tap a site to fly there.</p>
+              </div>
+              <Button variant="hud" size="icon" onClick={() => setShowMap(false)} aria-label="Close map"><X /></Button>
+            </div>
+            <TrekMap
+              planet={planet}
+              center={{ lat: OVERVIEW[planet].lat, lon: OVERVIEW[planet].lon }}
+              zoom={OVERVIEW[planet].zoom}
+              className="h-[58svh]"
+              label={`Map of ${meta.name} memory sites`}
+              markers={items.map(({ artifact: a }) => {
+                const found = discovered.includes(a.id);
+                return {
+                  id: a.id,
+                  lat: a.coordinates.lat,
+                  lon: a.coordinates.lon,
+                  label: found ? `Fly to ${a.shortName}` : `Fly to the unknown signal from ${a.missionYear}`,
+                  chip: found ? a.shortName : `? · ${a.missionYear}`,
+                  emphasis: !found,
+                  onSelect: () => {
+                    setShowMap(false);
+                    flyTo(a.id);
+                    if (found) setSelected(a.id);
+                    sfx.click();
+                  },
+                };
+              })}
+            />
+          </div>
         </div>
       )}
 

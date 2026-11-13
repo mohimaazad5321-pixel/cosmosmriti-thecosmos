@@ -16,6 +16,7 @@ import { Route as ChallengesRouteImport } from './routes/challenges'
 import { Route as PassportRouteImport } from './routes/passport'
 import { Route as TimelineRouteImport } from './routes/timeline'
 import { Route as ExplorePlanetRouteImport } from './routes/explore.$planet'
+import { Route as InspectIdRouteImport } from './routes/inspect.$id'
 import { Route as MemoryIdRouteImport } from './routes/memory.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -53,6 +54,11 @@ const ExplorePlanetRoute = ExplorePlanetRouteImport.update({
   path: '/explore/$planet',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InspectIdRoute = InspectIdRouteImport.update({
+  id: '/inspect/$id',
+  path: '/inspect/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MemoryIdRoute = MemoryIdRouteImport.update({
   id: '/memory/$id',
   path: '/memory/$id',
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/passport': typeof PassportRoute
   '/timeline': typeof TimelineRoute
   '/explore/$planet': typeof ExplorePlanetRoute
+  '/inspect/$id': typeof InspectIdRoute
   '/memory/$id': typeof MemoryIdRoute
 }
 export interface FileRoutesByTo {
@@ -77,6 +84,7 @@ export interface FileRoutesByTo {
   '/passport': typeof PassportRoute
   '/timeline': typeof TimelineRoute
   '/explore/$planet': typeof ExplorePlanetRoute
+  '/inspect/$id': typeof InspectIdRoute
   '/memory/$id': typeof MemoryIdRoute
 }
 export interface FileRoutesById {
@@ -88,6 +96,7 @@ export interface FileRoutesById {
   '/passport': typeof PassportRoute
   '/timeline': typeof TimelineRoute
   '/explore/$planet': typeof ExplorePlanetRoute
+  '/inspect/$id': typeof InspectIdRoute
   '/memory/$id': typeof MemoryIdRoute
 }
 export interface FileRouteTypes {
@@ -100,6 +109,7 @@ export interface FileRouteTypes {
     | '/passport'
     | '/timeline'
     | '/explore/$planet'
+    | '/inspect/$id'
     | '/memory/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -110,6 +120,7 @@ export interface FileRouteTypes {
     | '/passport'
     | '/timeline'
     | '/explore/$planet'
+    | '/inspect/$id'
     | '/memory/$id'
   id:
     | '__root__'
@@ -120,6 +131,7 @@ export interface FileRouteTypes {
     | '/passport'
     | '/timeline'
     | '/explore/$planet'
+    | '/inspect/$id'
     | '/memory/$id'
   fileRoutesById: FileRoutesById
 }
@@ -131,6 +143,7 @@ export interface RootRouteChildren {
   PassportRoute: typeof PassportRoute
   TimelineRoute: typeof TimelineRoute
   ExplorePlanetRoute: typeof ExplorePlanetRoute
+  InspectIdRoute: typeof InspectIdRoute
   MemoryIdRoute: typeof MemoryIdRoute
 }
 
@@ -185,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExplorePlanetRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/inspect/$id': {
+      id: '/inspect/$id'
+      path: '/inspect/$id'
+      fullPath: '/inspect/$id'
+      preLoaderRoute: typeof InspectIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/memory/$id': {
       id: '/memory/$id'
       path: '/memory/$id'
@@ -203,6 +223,7 @@ const rootRouteChildren: RootRouteChildren = {
   PassportRoute: PassportRoute,
   TimelineRoute: TimelineRoute,
   ExplorePlanetRoute: ExplorePlanetRoute,
+  InspectIdRoute: InspectIdRoute,
   MemoryIdRoute: MemoryIdRoute,
 }
 export const routeTree = rootRouteImport

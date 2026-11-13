@@ -137,6 +137,80 @@ function ALSEP() {
   );
 }
 
+/** Apollo 14's station: central station, RTG, passive seismometer, plus the instruments unique to it. */
+function ALSEPA14() {
+  return (
+    <group>
+      <mesh position={[0, 0.35, 0]} castShadow>
+        <boxGeometry args={[0.9, 0.5, 0.6]} />
+        {mat("white")}
+      </mesh>
+      <mesh position={[0, 0.85, 0]} rotation={[-0.3, 0, 0]} castShadow>
+        <boxGeometry args={[1.1, 0.03, 0.8]} />
+        {mat("silver")}
+      </mesh>
+      <mesh position={[0.2, 1.2, -0.2]} castShadow>
+        <cylinderGeometry args={[0.02, 0.02, 0.8, 6]} />
+        {mat("silver")}
+      </mesh>
+      {/* RTG */}
+      <group position={[-2.4, 0, 1.0]}>
+        <mesh position={[0, 0.45, 0]} castShadow>
+          <cylinderGeometry args={[0.2, 0.2, 0.7, 12]} />
+          {mat("black")}
+        </mesh>
+        {Array.from({ length: 8 }).map((_, i) => (
+          <mesh key={i} position={[Math.cos((i * Math.PI) / 4) * 0.28, 0.45, Math.sin((i * Math.PI) / 4) * 0.28]} rotation={[0, -(i * Math.PI) / 4, 0]} castShadow>
+            <boxGeometry args={[0.18, 0.66, 0.02]} />
+            {mat("black")}
+          </mesh>
+        ))}
+      </group>
+      {/* passive seismometer */}
+      <mesh position={[-2.0, 0.05, -0.6]} castShadow>
+        <sphereGeometry args={[0.3, 20, 10, 0, Math.PI * 2, 0, Math.PI / 2]} />
+        {mat("silver")}
+      </mesh>
+      {/* Active Seismic Experiment: a line of geophones on a cable */}
+      {[0, 1, 2].map((i) => (
+        <mesh key={i} position={[1.2 + i * 0.9, 0.06, -0.6 - i * 0.7]} castShadow>
+          <cylinderGeometry args={[0.07, 0.09, 0.12, 10]} />
+          {mat("foilDark")}
+        </mesh>
+      ))}
+      <mesh position={[2.1, 0.02, -1.3]} rotation={[0, Math.atan2(1.4, 1.8), Math.PI / 2]}>
+        <cylinderGeometry args={[0.012, 0.012, 2.6, 4]} />
+        {mat("white")}
+      </mesh>
+      {/* Charged Particle Lunar Environment Experiment */}
+      <mesh position={[1.5, 0.2, 1.3]} castShadow>
+        <boxGeometry args={[0.35, 0.3, 0.3]} />
+        {mat("foil")}
+      </mesh>
+      <mesh position={[1.5, 0.4, 1.3]} rotation={[0.4, 0, 0]} castShadow>
+        <cylinderGeometry args={[0.06, 0.06, 0.18, 10]} />
+        {mat("black")}
+      </mesh>
+      {/* Cold Cathode Gauge */}
+      <mesh position={[-1.4, 0.2, -1.5]} castShadow>
+        <boxGeometry args={[0.25, 0.25, 0.25]} />
+        {mat("white")}
+      </mesh>
+      <mesh position={[-1.4, 0.4, -1.5]} castShadow>
+        <cylinderGeometry args={[0.07, 0.07, 0.18, 12]} />
+        {mat("silver")}
+      </mesh>
+      {/* cables to the central station */}
+      {([[-2.4, 1.0], [-2.0, -0.6], [1.5, 1.3], [-1.4, -1.5], [1.2, -0.6]] as const).map(([x, z], i) => (
+        <mesh key={i} position={[x / 2, 0.03, z / 2]} rotation={[0, -Math.atan2(z, x), Math.PI / 2]}>
+          <cylinderGeometry args={[0.012, 0.012, Math.hypot(x, z), 4]} />
+          {mat("white")}
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
 function WireWheel({ position, r = 0.41 }: { position: [number, number, number]; r?: number }) {
   return (
     <group position={position} rotation={[Math.PI / 2, 0, 0]}>
@@ -241,6 +315,11 @@ function Sojourner() {
         <boxGeometry args={[0.04, 0.05, 0.12]} />
         {mat("black")}
       </mesh>
+      {/* APXS on its deployment mechanism at the rear */}
+      <mesh position={[-0.27, 0.15, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
+        <cylinderGeometry args={[0.035, 0.035, 0.08, 10]} />
+        {mat("silver")}
+      </mesh>
     </group>
   );
 }
@@ -282,6 +361,11 @@ function MER() {
         <cylinderGeometry args={[0.03, 0.03, 0.6, 6]} />
         {mat("silver")}
       </mesh>
+      {/* Rock Abrasion Tool at the end of the arm */}
+      <mesh position={[1.12, 0.2, -0.1]} castShadow>
+        <cylinderGeometry args={[0.06, 0.06, 0.1, 12]} />
+        {mat("foilDark")}
+      </mesh>
       {/* antenna */}
       <mesh position={[-0.3, 1.05, -0.25]} castShadow>
         <cylinderGeometry args={[0.15, 0.15, 0.05, 16]} />
@@ -321,6 +405,17 @@ function Pathfinder() {
         <boxGeometry args={[0.25, 0.14, 0.14]} />
         {mat("white")}
       </mesh>
+      {/* ASI/MET weather mast on a petal */}
+      <mesh position={[-0.5, 0.6, -0.85]} castShadow>
+        <cylinderGeometry args={[0.015, 0.015, 0.9, 6]} />
+        {mat("silver")}
+      </mesh>
+      {[0.35, 0.65, 0.95].map((y) => (
+        <mesh key={y} position={[-0.5, 0.15 + y, -0.85]} castShadow>
+          <boxGeometry args={[0.12, 0.02, 0.02]} />
+          {mat("white")}
+        </mesh>
+      ))}
       {/* ramp */}
       <mesh position={[-1.5, 0.15, 0.2]} rotation={[0, 0, 0.18]} castShadow>
         <boxGeometry args={[0.9, 0.02, 0.3]} />
@@ -366,6 +461,28 @@ function Phoenix() {
         <planeGeometry args={[0.4, 0.9]} />
         <meshStandardMaterial color="#e8e4dc" roughness={0.8} />
       </mesh>
+      {/* TEGA ovens and MECA lab on the deck */}
+      <mesh position={[0.3, 1.27, 0.35]} castShadow>
+        <boxGeometry args={[0.35, 0.14, 0.2]} />
+        {mat("white")}
+      </mesh>
+      <mesh position={[0.2, 1.27, -0.4]} castShadow>
+        <boxGeometry args={[0.3, 0.14, 0.25]} />
+        {mat("silver")}
+      </mesh>
+      {/* meteorological mast and lidar */}
+      <mesh position={[-0.55, 1.65, 0.45]} castShadow>
+        <cylinderGeometry args={[0.015, 0.015, 1.0, 6]} />
+        {mat("silver")}
+      </mesh>
+      <mesh position={[-0.55, 2.15, 0.45]} castShadow>
+        <boxGeometry args={[0.04, 0.12, 0.04]} />
+        {mat("white")}
+      </mesh>
+      <mesh position={[-0.2, 1.3, 0.5]} castShadow>
+        <boxGeometry args={[0.16, 0.16, 0.16]} />
+        {mat("black")}
+      </mesh>
       {/* camera mast */}
       <mesh position={[-0.35, 1.7, 0]} castShadow>
         <cylinderGeometry args={[0.03, 0.03, 1.0, 6]} />
@@ -385,6 +502,8 @@ export function Reconstruction({ kind }: { kind: ReconstructionKind }) {
       return <LMDescent />;
     case "alsep":
       return <ALSEP />;
+    case "alsep-a14":
+      return <ALSEPA14 />;
     case "lrv":
       return <LRV />;
     case "pathfinder":

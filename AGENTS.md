@@ -36,5 +36,9 @@ use the editor.
 - 3D worlds: pure-TS terrain/projection in `src/game/`, R3F drawing in `src/components/world/`; per-frame state stays in refs, never React state — keeps the canvas from re-rendering.
 - The explore route is `ssr: false` and the scene is memoised; HUD state must not be passed in a way that re-creates the Canvas.
 - Progress is anonymous zustand `persist` with `skipHydration`, rehydrated in `__root` — avoids SSR hydration mismatches.
-- In-world objects are procedural reconstructions and must stay labelled "not an authentic NASA model" until verified NASA models replace them.
+- Every 3D object is labelled by provenance: NASA 3D Resources models (`reconstruction.nasaModel`, credited, relation to the specific artifact stated) or procedural reconstructions labelled "not an authentic NASA model" — visitors must never mistake a reconstruction for NASA data.
+- NASA GLBs are re-encoded Draco → meshopt (drei would fetch a Draco decoder from a CDN) and hosted via `src/assets/models/*.asset.json`; the lunar-module descent-stage cut uses `LM_DESCENT_TOP_Y` in `src/game/nasaModels.ts` for both the pre-cut world file and the inspector.
+- Inspector hotspots are DOM buttons projected each frame, not drei `<Html>` — Html's nested roots unmount mid-render and throw.
+- Real maps use NASA Trek WMTS tiles via `src/game/trek.ts` + `TrekMap`, with markers at true coordinates; the 3D world is the only compressed view and says so.
+- Live NASA API calls run in `createServerFn` (`src/lib/nasa.functions.ts`) reading `NASA_API_KEY` (falls back to the rate-limited DEMO_KEY) so keys never reach the browser.
 - Sound only plays from user gestures through `src/lib/sound.ts`, which respects the mute setting.
