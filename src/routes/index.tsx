@@ -136,6 +136,9 @@ function Landing() {
           <p className={cn("display mt-3 text-xl italic text-muted-foreground md:text-2xl", stage >= 6 ? "animate-fade-up [animation-delay:200ms]" : "opacity-0")}>
             The universe never forgets.
           </p>
+          <p className={cn("mt-2 text-sm text-muted-foreground", stage >= 6 ? "animate-fade-up [animation-delay:350ms]" : "opacity-0")}>
+            <span className="text-primary">Smriti</span> (<span lang="bn">স্মৃতি</span>) is the Bengali word for memory.
+          </p>
           <div className={cn("mt-7 flex flex-col items-center gap-4", stage >= 7 ? "animate-fade-up" : "pointer-events-none opacity-0")}>
             <p className="eyebrow text-primary">Choose your world · tap an eye</p>
             <div className="flex flex-wrap justify-center gap-3">
