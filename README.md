@@ -259,7 +259,7 @@ cosmosmriti-thecosmos/
 | 🎥 Video | Link |
 |---|---|
 | **Project Presentation** (240 second] https://youtu.be/NBkGACdYyjQ?si=GoRPalokS_9b1CjY
-| **Short Project Demo** (30 seconds) | _Coming soon_ |
+| **Short Project Demo** (30 seconds) | https://youtu.be/OASq343Go80?si=s2oqBzI2TUWG9Yya
 
 ---
 
